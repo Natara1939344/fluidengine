@@ -12,6 +12,8 @@
 #ifndef ConceptsFile
 #define ConceptsFile
 
+#include <ostream>
+
 namespace FluidEngine
 {
     namespace Concepts
@@ -24,9 +26,12 @@ namespace FluidEngine
          * @tparam SomeOutputStream 
          */
         template<typename SomeOutputStream>
-        concept OutputStream = requires(SomeOutputStream& sostream, const char* const text)
+        concept OutputStream = std::is_base_of<std::basic_ostream<wchar_t>, SomeOutputStream>::value;
+
+        template<typename SomeOutStreamable>
+        concept OutStreamable = requires(std::basic_ostream<wchar_t>& ostream, SomeOutStreamable outStreamable)
         {
-            sostream << text;
+            ostream << outStreamable;
         };
 
         /**

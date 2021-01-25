@@ -1,11 +1,11 @@
 /**
  * @file FluidEngineMember.h++
- * @author Joshua Buchanan (joshuarobertbuchanan@gmail.com)
+ * @author Joshua Buchanan (joshuarobertbuchanan@gmail.com) (github: @Natara1939344)
  * @brief Defines FluidEngineMember
  * @version 0.1
  * @date 2021-01-21
  * 
- * @copyright Copyright (c) 2021
+ * @copyright Copyright (c) 2021 Joshua Buchanan
  * 
  */
 
