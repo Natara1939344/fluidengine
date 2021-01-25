@@ -1,0 +1,61 @@
+\hypertarget{Concepts_8h_09_09}{}\doxysection{Source/\+Concepts/\+Concepts.h++ File Reference}
+\label{Concepts_8h_09_09}\index{Source/Concepts/Concepts.h++@{Source/Concepts/Concepts.h++}}
+
+
+Defines the (global) concepts found in Fluid\+Engine.  
+
+
+This graph shows which files directly or indirectly include this file\+:
+% FIG 0
+\doxysubsection*{Variables}
+\begin{DoxyCompactItemize}
+\item 
+{\footnotesize template$<$typename Some\+Output\+Stream $>$ }\\concept \mbox{\hyperlink{Concepts_8h_09_09_aff3bc92a9325944b4a7e27305d16d069}{Fluid\+Engine\+::\+Concepts\+::\+Output\+Stream}}
+\begin{DoxyCompactList}\small\item\em Determines whether the type Some\+Output\+Stream is some output stream (i.\+e., we can send text to it like a file) \end{DoxyCompactList}\end{DoxyCompactItemize}
+
+
+\doxysubsection{Detailed Description}
+Defines the (global) concepts found in Fluid\+Engine. 
+
+\begin{DoxyAuthor}{Author}
+Joshua Buchanan (\href{mailto:joshuarobertbuchanan@gmail.com}{\texttt{ joshuarobertbuchanan@gmail.\+com}}) 
+\end{DoxyAuthor}
+\begin{DoxyVersion}{Version}
+0.\+1 
+\end{DoxyVersion}
+\begin{DoxyDate}{Date}
+2021-\/01-\/21
+\end{DoxyDate}
+\begin{DoxyCopyright}{Copyright}
+Copyright (c) 2021 
+\end{DoxyCopyright}
+
+
+\doxysubsection{Variable Documentation}
+\mbox{\Hypertarget{Concepts_8h_09_09_aff3bc92a9325944b4a7e27305d16d069}\label{Concepts_8h_09_09_aff3bc92a9325944b4a7e27305d16d069}} 
+\index{Concepts.h++@{Concepts.h++}!OutputStream@{OutputStream}}
+\index{OutputStream@{OutputStream}!Concepts.h++@{Concepts.h++}}
+\doxysubsubsection{\texorpdfstring{OutputStream}{OutputStream}}
+{\footnotesize\ttfamily template$<$typename Some\+Output\+Stream $>$ \\
+concept Fluid\+Engine\+::\+Concepts\+::\+Output\+Stream}
+
+{\bfseries Initial value\+:}
+\begin{DoxyCode}{0}
+\DoxyCodeLine{= requires(SomeOutputStream\& sostream, \textcolor{keyword}{const} \textcolor{keywordtype}{char}* \textcolor{keyword}{const} text)}
+\DoxyCodeLine{        \{}
+\DoxyCodeLine{            sostream << text;}
+\DoxyCodeLine{        \}}
+
+\end{DoxyCode}
+
+
+Determines whether the type Some\+Output\+Stream is some output stream (i.\+e., we can send text to it like a file) 
+
+\begin{DoxyNote}{Note}
+concepts are new in C++ 20--if you try compiling with an earlier standard, you will get about 500 lines of your compiler not knowing what you mean 
+\end{DoxyNote}
+
+\begin{DoxyTemplParams}{Template Parameters}
+{\em Some\+Output\+Stream} & \\
+\hline
+\end{DoxyTemplParams}
