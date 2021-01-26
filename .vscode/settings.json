@@ -1,7 +1,8 @@
 {
     "files.associations": {
         "*.h++": "cpp",
-        "type_traits": "cpp"
+        "type_traits": "cpp",
+        "limits": "cpp"
     },
     "C_Cpp.default.cppStandard": "c++20",
     "C_Cpp.default.defines": [
