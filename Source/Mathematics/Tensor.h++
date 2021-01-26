@@ -61,6 +61,24 @@ namespace FluidEngine
              */
             D3,
         };
+
+        /**
+         * @brief Polar and rectangular vectors
+         * 
+         */
+        enum class VectorFormatting
+        {
+            /**
+             * @brief Polar
+             * 
+             */
+            Plr,
+            /**
+             * @brief Rectangular
+             * 
+             */
+            Rct,
+        };
     } // namespace Mathematics
     
 } // namespace FluidEngine
