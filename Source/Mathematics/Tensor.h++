@@ -83,7 +83,7 @@ namespace FluidEngine
         };
 
         template<VectorPrecisions Precision>
-        class Vector : public Abstraction::FluidEngineMember
+        class VectorBase : public Abstraction::FluidEngineMember
         {
         public:
             template<bool std::enable_if<Precision == VectorPrecisions::Low, bool> = true>
@@ -104,7 +104,7 @@ namespace FluidEngine
 
         public:
 
-            Vector
+            VectorBase
             (
                 const std::wstring& vectorName,
                 const VectorDimensions&,
@@ -114,7 +114,7 @@ namespace FluidEngine
                 const VectorType& = std::numeric_limits<VectorType>::quiet_nan()
             ) noexcept;
 
-            Vector
+            VectorBase
             (
                 const VectorDimensions&,
                 const VectorFormatting&,
@@ -131,56 +131,56 @@ namespace FluidEngine
             const std::array<VectorType, 3>& GetCoordinates() const noexcept;
             const std::array<VectorType, 3>& GetCoordinates() noexcept;
 
-            const Vector<VectorPrecisions::Low> ConvertLowPrecision() const noexcept;
-            const Vector<VectorPrecisions::Low> ConvertLowPrecision() noexcept;
+            const VectorBase<VectorPrecisions::Low> ConvertLowPrecision() const noexcept;
+            const VectorBase<VectorPrecisions::Low> ConvertLowPrecision() noexcept;
 
-            const Vector<VectorPrecisions::Mid> ConvertMidPrecision() const noexcept;
-            const Vector<VectorPrecisions::Mid> ConvertMidPrecision() noexcept;
+            const VectorBase<VectorPrecisions::Mid> ConvertMidPrecision() const noexcept;
+            const VectorBase<VectorPrecisions::Mid> ConvertMidPrecision() noexcept;
 
-            const Vector<VectorPrecisions::Max> ConvertMaxPrecision() const noexcept;
-            const Vector<VectorPrecisions::Max> ConvertMaxPrecision() noexcept;
+            const VectorBase<VectorPrecisions::Max> ConvertMaxPrecision() const noexcept;
+            const VectorBase<VectorPrecisions::Max> ConvertMaxPrecision() noexcept;
 
-            const Vector<Precision> AsRectangular() const noexcept;
-            const Vector<Precision> AsRectangular() noexcept;
+            const VectorBase<Precision> AsRectangular() const noexcept;
+            const VectorBase<Precision> AsRectangular() noexcept;
 
-            const Vector<Precision> AsPolar() const noexcept;
-            const Vector<Precision> AsPolar() noexcept;
+            const VectorBase<Precision> AsPolar() const noexcept;
+            const VectorBase<Precision> AsPolar() noexcept;
 
-            const Vector<Precision> ExpandToThreeDimensions
+            const VectorBase<Precision> ExpandToThreeDimensions
             (
                 const VectorType& thirdCoordinate = 0
             ) const noexcept;
-            const Vector<Precision> ExpandToThreeDimensions
+            const VectorBase<Precision> ExpandToThreeDimensions
             (
                 const VectorType& thirdCoordinate = 0
             ) noexcept;
 
-            const Vector<Precision> CompressToTwoDimensions
+            const VectorBase<Precision> CompressToTwoDimensions
             () const noexcept;
 
-            const Vector<Precision> CompressToTwoDimensions
+            const VectorBase<Precision> CompressToTwoDimensions
             () const noexcept;
 
-            const Vector<Precision> NormalizedForm() const noexcept;
-            const Vector<Precision> NormalizedForm() noexcept;
+            const VectorBase<Precision> NormalizedForm() const noexcept;
+            const VectorBase<Precision> NormalizedForm() noexcept;
 
-            const Vector<Precision> FastNormalize() const noexcept;
-            const Vector<Precision> FastNormalize() noexcept;
+            const VectorBase<Precision> FastNormalize() const noexcept;
+            const VectorBase<Precision> FastNormalize() noexcept;
 
             const VectorType Magnitude() const noexcept;
             const VectorType Magnitude() noexcept;
 
-            const Vector<Precision>& operator+(const Vector<Precision>&) const noexcept;
-            const Vector<Precision>& operator+(const Vector<Precision>&) noexcept;
+            const VectorBase<Precision>& operator+(const VectorBase<Precision>&) const noexcept;
+            const VectorBase<Precision>& operator+(const VectorBase<Precision>&) noexcept;
 
-            const Vector<Precision>& operator-(const Vector<Precision>&) const noexcept;
-            const Vector<Precision>& operator-(const Vector<Precision>&) noexcept;
+            const VectorBase<Precision>& operator-(const VectorBase<Precision>&) const noexcept;
+            const VectorBase<Precision>& operator-(const VectorBase<Precision>&) noexcept;
 
-            const Vector<Precision>& operator*(const Vector<Precision>&) const noexcept;
-            const Vector<Precision>& operator*(const Vector<Precision>&) const noexcept;
+            const VectorBase<Precision>& operator*(const VectorBase<Precision>&) const noexcept;
+            const VectorBase<Precision>& operator*(const VectorBase<Precision>&) const noexcept;
 
-            const Vector<Precision>& operator/(const Vector<Precision>&) const noexcept;
-            const Vector<Precision>& operator/(const Vector<Precision>&) noexcept;
+            const VectorBase<Precision>& operator/(const VectorBase<Precision>&) const noexcept;
+            const VectorBase<Precision>& operator/(const VectorBase<Precision>&) noexcept;
 
             /**
              * @brief Convenience function to generate a 2-Dimensional, named, rectangular vector
@@ -188,11 +188,11 @@ namespace FluidEngine
              * @param name the name
              * @param x x coordinate
              * @param y y coordinate
-             * @return Vector<Precision> 
+             * @return VectorBase<Precision> 
              */
-            static __always_inline Vector<Precision> Generate2DRVectorWithName(const std::wstring& name, const VectorType& x, const VectorType& y) noexcept
+            static __always_inline VectorBase<Precision> Generate2DRVectorWithName(const std::wstring& name, const VectorType& x, const VectorType& y) noexcept
             {
-                return Vector<Precision>(name, VectorDimensions::D2, VectorFormatting::Rct, x, y);
+                return VectorBase<Precision>(name, VectorDimensions::D2, VectorFormatting::Rct, x, y);
             }
 
             /**
@@ -200,11 +200,11 @@ namespace FluidEngine
              * 
              * @param x x coordinate
              * @param y y coordinate
-             * @return Vector<Precision> 
+             * @return VectorBase<Precision> 
              */
-            static __always_inline Vector<Precision> Generate2DRVectorWithOutName(const VectorType& x, const VectorType& y) noexcept
+            static __always_inline VectorBase<Precision> Generate2DRVectorWithOutName(const VectorType& x, const VectorType& y) noexcept
             {
-                return Vector<Precision>(VectorDimensions::D2, VectorFormatting::Rct, x, y);
+                return VectorBase<Precision>(VectorDimensions::D2, VectorFormatting::Rct, x, y);
             }
 
             /**
@@ -214,11 +214,11 @@ namespace FluidEngine
              * @param x x coordinate
              * @param y y coordinate
              * @param z z coordinate
-             * @return Vector<Precision> 
+             * @return VectorBase<Precision> 
              */
-            static __always_inline Vector<Precision> Generate3DRVectorWithName(const std::wstring& name, const VectorType& x, const VectorType& y, const VectorType& z) noexcept
+            static __always_inline VectorBase<Precision> Generate3DRVectorWithName(const std::wstring& name, const VectorType& x, const VectorType& y, const VectorType& z) noexcept
             {
-                return Vector<Precision>(name, VectorDimensions::D3, VectorFormatting::Rct, x, y, z);
+                return VectorBase<Precision>(name, VectorDimensions::D3, VectorFormatting::Rct, x, y, z);
             }
 
             /**
@@ -227,11 +227,11 @@ namespace FluidEngine
              * @param x x coordiante
              * @param y y coordinate
              * @param z z coordinate
-             * @return Vector<Precision> 
+             * @return VectorBase<Precision> 
              */
-            static __always_inline Vector<Precision> Generate3DRVectorWithOutName(const VectorType& x, const VectorType& y, const VectorType& z) noexcept
+            static __always_inline VectorBase<Precision> Generate3DRVectorWithOutName(const VectorType& x, const VectorType& y, const VectorType& z) noexcept
             {
-                return Vector<Precision>(VectorDimensions::D3, VectorFormatting::Rct, x, y, z);
+                return VectorBase<Precision>(VectorDimensions::D3, VectorFormatting::Rct, x, y, z);
             }
 
             /**
@@ -241,22 +241,22 @@ namespace FluidEngine
              * @param r radius
              * @param Θ theta (\u0398)
              * 
-             * @return Vector<Precision>
+             * @return VectorBase<Precision>
              */
-            static __always_inline Vector<Precision> Generate2DPVectorWithName(const std::wstring& name, const VectorType& r, const VectorType& Θ) noexcept
+            static __always_inline VectorBase<Precision> Generate2DPVectorWithName(const std::wstring& name, const VectorType& r, const VectorType& Θ) noexcept
             {
-                return Vector<Precision>(name, VectorDimensions::D2, VectorFormatting::Plr, r, Θ);
+                return VectorBase<Precision>(name, VectorDimensions::D2, VectorFormatting::Plr, r, Θ);
             }
             /**
              * @brief Convenience function to generate a 2-Dimensional, unnamed, polar vector
              * @param r radius
              * @param Θ theta (\u0398)
              * 
-             * @return Vector<Precision>
+             * @return VectorBase<Precision>
              */
-            static __always_inline Vector<Precision> Generate2DPVectorWithOutName(const VectorType& r, const VectorType& Θ) noexcept
+            static __always_inline VectorBase<Precision> Generate2DPVectorWithOutName(const VectorType& r, const VectorType& Θ) noexcept
             {
-                return Vector<Precision>(VectorDimensions::D2, VectorFormatting::Plr, r, Θ);
+                return VectorBase<Precision>(VectorDimensions::D2, VectorFormatting::Plr, r, Θ);
             }
 
             /**
@@ -267,11 +267,11 @@ namespace FluidEngine
              * @param Θ theta (\u0398)
              * @param ϕ phi (\u03d5)
              * 
-             * @return Vector<Precision>
+             * @return VectorBase<Precision>
              */
-            static __always_inline Vector<Precision> Generate3DPVectorWithName(const std::wstring& name, const VectorType& r, const VectorType& Θ, const VectorType& ϕ) noexcept
+            static __always_inline VectorBase<Precision> Generate3DPVectorWithName(const std::wstring& name, const VectorType& r, const VectorType& Θ, const VectorType& ϕ) noexcept
             {
-                return Vector<Precision>(name, VectorDimensions::D3, VectorFormatting::Plr, r, Θ, ϕ);
+                return VectorBase<Precision>(name, VectorDimensions::D3, VectorFormatting::Plr, r, Θ, ϕ);
             }
 
             /**
@@ -281,11 +281,11 @@ namespace FluidEngine
              * @param Θ theta (\u0398)
              * @param ϕ phi (\u03d5)
              * 
-             * @return Vector<Precision>
+             * @return VectorBase<Precision>
              */
-            static __always_inline Vector<Precision> Generate3DPVectorWithOutName(const VectorType& r, const VectorType& Θ, const VectorType& ϕ) noexcept
+            static __always_inline VectorBase<Precision> Generate3DPVectorWithOutName(const VectorType& r, const VectorType& Θ, const VectorType& ϕ) noexcept
             {
-                return Vector<Precision>(VectorDimensions::D3, VectorFormatting::Plr, r, Θ, ϕ);
+                return VectorBase<Precision>(VectorDimensions::D3, VectorFormatting::Plr, r, Θ, ϕ);
             }
         };
     } // namespace Mathematics
