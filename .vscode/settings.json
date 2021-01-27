@@ -8,5 +8,17 @@
     "C_Cpp.default.cppStandard": "c++20",
     "C_Cpp.default.defines": [
         "DEBUG"
+    ],
+    "doxdocgen.generic.order": [
+        "brief",
+        "note",
+        "details",
+        "author",
+        "copyright",
+        "empty",
+        "tparam",
+        "param",
+        "return",
+        "custom"
     ]
 }
