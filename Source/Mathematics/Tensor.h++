@@ -373,7 +373,16 @@ namespace FluidEngine
                 const VectorBase<VectorType>&
             ) noexcept;
 
+            const VectorBase<VectorType>& Reflection
+            (
+                const VectorBase<VectorType>&
+            ) const noexcept;
+            const VectorBase<VectorType>& Reflection
+            (
+                const VectorBase<VectorType>&
+            ) noexcept;
 
+            
             //-----------------------------------------------------------------
             // Outlining is your friend :) Stick to 80 columns
             //-----------------------------------------------------------------

@@ -13,14 +13,6 @@
 #define UnificationFile
 
 
-#include <cmath>
-#include <type_traits>
-
-
-
-
-
-
 
 #define DEBUG
 #undef DEBUG 
