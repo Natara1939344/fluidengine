@@ -36,3 +36,9 @@ if (true)
   std::wcout << L"Hello World!" << '\n';
 }
 ```
+
+
+# Community
+
+## Discord
+There is a FluidEngine community discord: https://discord.gg/bRYRuWvg3C
