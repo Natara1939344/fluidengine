@@ -72,6 +72,14 @@ namespace FluidEngine
         };
 
         /**
+         * @brief Checks if something is usable in VectorBase
+         * 
+         * @tparam Floating 
+         */
+        template<typename Floating>
+        concept UsableInVectorBase = std::is_floating_point<Floating>::value;
+
+        /**
          * @brief There are plenty of operator-based concepts
          * 
          */

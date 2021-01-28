@@ -13,6 +13,7 @@
 #define TensorMathematicsFile
 
 #include "../Abstraction/FluidEngineMember.h++"
+#include "../Concepts/Concepts.h++"
 
 #include <limits>
 #include <array>
@@ -21,29 +22,6 @@ namespace FluidEngine
 {
     namespace Mathematics
     {
-        /**
-         * @brief 
-         * @author Joshua Buchanan
-         */
-        enum class VectorPrecisions
-        {
-            /**
-             * @brief Single Precision
-             * @author Joshua Buchanan
-             */
-            Low,
-            /**
-             * @brief Double Precision
-             * @author Joshua Buchanan
-             */
-            Mid,
-            /**
-             * @brief Maximum Precision
-             * @author Joshua Buchanan
-             */
-            Max,
-        };
-
         /**
          * @brief Whether this vector is a 2 or 3 dimensional one
          * @note 2 and 3 dimensional vectors use the same amount of
@@ -91,40 +69,11 @@ namespace FluidEngine
          * @copyright 2021 Joshua Buchanan
          * @tparam Precision 
          */
-        template<VectorPrecisions Precision>
+        template<FluidEngine::Concepts::UsableInVectorBase Floating>
         class VectorBase : public Abstraction::FluidEngineMember
         {
         public:
-            /**
-             * @brief Aliases VectorType to the current used type based on 
-             * the value of Precision
-             * @author Joshua Buchanan
-             */
-            template<
-                bool std::enable_if<
-                    Precision == VectorPrecisions::Low, bool
-                > = true
-            > using VectorType = float;
-            /**
-             * @brief Aliases VectorType to the current used type based on 
-             * the value of Precision
-             * @author Joshua Buchanan
-             */
-            template<
-                bool std::enable_if<
-                    Precision == VectorPrecisions::Mid, bool
-                > = true
-            > using VectorType = double;
-            /**
-             * @brief Aliases VectorType to the current used type based on 
-             * the value of Precision
-             * @author Joshua Buchanan
-             */
-            template<
-                bool std::enable_if<
-                    Precision == VectorPrecisions::Max, bool
-                > = true
-            > using VectorType = long double;
+            using VectorType = Floating;
 
         private:
 
@@ -137,7 +86,7 @@ namespace FluidEngine
 
             VectorBase
             (
-                const std::wstring& vectorName,
+                const std::wstring&,
                 const VectorDimensions&,
                 const VectorFormatting&, 
                 const VectorType&, 
@@ -151,6 +100,7 @@ namespace FluidEngine
             (
                 const VectorDimensions&,
                 const VectorFormatting&,
+                const VectorType&,
                 const VectorType&,
                 const VectorType& = std::numeric_limits<
                     VectorType
@@ -176,7 +126,12 @@ namespace FluidEngine
              * @return const VectorFormatting& 
              */
             const VectorFormatting& GetFormatting() const noexcept;
-            const VectorFormatting& GetFormatting() const noexcept;
+            /**
+             * @brief Get the Formatting object
+             * @author Joshau Buchanan
+             * @return const VectorFormatting& 
+             */
+            const VectorFormatting& GetFormatting() noexcept;
 
             /**
              * @brief Get the Coordinates
@@ -196,14 +151,14 @@ namespace FluidEngine
              * @author Joshua Buchanan
              * @return VectorBase<VectorPrecisions::Low> 
              */
-            VectorBase<VectorPrecisions::Low> 
+            VectorBase<float> 
             ConvertLowPrecision() const noexcept;
             /**
              * @brief Gets this VectorBase represented by floats
              * @author Joshua Buchanan
              * @return VectorBase<VectorPrecisions::Low> 
              */
-            VectorBase<VectorPrecisions::Low> 
+            VectorBase<float> 
             ConvertLowPrecision() noexcept;
 
             /**
@@ -211,14 +166,14 @@ namespace FluidEngine
              * @author Joshua Buchanan
              * @return VectorBase<VectorPrecisions::Mid> 
              */
-            VectorBase<VectorPrecisions::Mid> 
+            VectorBase<double> 
             ConvertMidPrecision() const noexcept;
             /**
              * @brief Gets this VectorBase represented by doubles
              * @author Joshua Buchanan
              * @return VectorBase<VectorPrecisions::Mid> 
              */
-            VectorBase<VectorPrecisions::Mid> 
+            VectorBase<double> 
             ConvertMidPrecision() noexcept;
 
             /**
@@ -226,14 +181,14 @@ namespace FluidEngine
              * @author Joshua Buchanan
              * @return VectorBase<VectorPrecisions::Max> 
              */
-            VectorBase<VectorPrecisions::Max> 
+            VectorBase<long double> 
             ConvertMaxPrecision() const noexcept;
             /**
              * @brief Gets this VectorBase represente by long doubles
              * @author Joshua Buchanan
              * @return VectorBase<VectorPrecisions::Max> 
              */
-            VectorBase<VectorPrecisions::Max> 
+            VectorBase<long double> 
             ConvertMaxPrecision() noexcept;
 
             /**
@@ -242,7 +197,7 @@ namespace FluidEngine
              * @author Joshua Buchanan
              * @return VectorBase<Precision> 
              */
-            VectorBase<Precision> AsRectangular() const noexcept;
+            VectorBase<VectorType> AsRectangular() const noexcept;
 
             /**
              * @brief Converts this to a rectangular form
@@ -250,7 +205,7 @@ namespace FluidEngine
              * @author Joshua Buchanan
              * @return VectorBase<Precision> 
              */
-            VectorBase<Precision> AsRectangular() noexcept;
+            VectorBase<VectorType> AsRectangular() noexcept;
 
             /**
              * @brief Converts this to a polar form
@@ -258,14 +213,29 @@ namespace FluidEngine
              * @author Joshua Buchanan
              * @return VectorBase<Precision> 
              */
-            VectorBase<Precision> AsPolar() const noexcept;
+            VectorBase<VectorType> AsPolar() const noexcept;
             /**
              * @brief Converts this to a polar form
              * @note if this is already polar, kind of does nothing
              * @author Joshua Buchanan
              * @return VectorBase<Precision> 
              */
-            VectorBase<Precision> AsPolar() noexcept;
+            VectorBase<VectorType> AsPolar() noexcept;
+
+            /**
+             * @brief Converts this to polar form using some voodoo math
+             * approximations
+             * @author Joshua Buchanan
+             * @return VectorBase<VectorType> 
+             */
+            VectorBase<VectorType> AsPolarFast() const noexcept;
+            /**
+             * @brief Converts this to polar form using some voodoo math
+             * approximations
+             * @author Joshua Buchanan
+             * @return VectorBase<VectorType> 
+             */
+            VectorBase<VectorType> AsPolarFast() noexcept;
 
             /**
              * @brief Expands this to three dimensions with the given third 
@@ -277,7 +247,7 @@ namespace FluidEngine
              * given.
              * @return VectorBase<Precision> 
              */
-            VectorBase<Precision> ExpandToThreeDimensions
+            VectorBase<VectorType> ExpandToThreeDimensions
             (
                 const VectorType& thirdCoordinate = 0
             ) const noexcept;
@@ -291,7 +261,7 @@ namespace FluidEngine
              * given.
              * @return VectorBase<Precision> 
              */
-            VectorBase<Precision> ExpandToThreeDimensions
+            VectorBase<VectorType> ExpandToThreeDimensions
             (
                 const VectorType& thirdCoordinate = 0
             ) noexcept;
@@ -303,7 +273,7 @@ namespace FluidEngine
              * @author Joshua Buchanan
              * @return VectorBase<Precision> 
              */
-            VectorBase<Precision> CompressToTwoDimensions
+            VectorBase<VectorType> CompressToTwoDimensions
             () const noexcept;
 
             /**
@@ -313,7 +283,7 @@ namespace FluidEngine
              * @author Joshua Buchanan
              * @return VectorBase<Precision> 
              */
-            VectorBase<Precision> CompressToTwoDimensions
+            VectorBase<VectorType> CompressToTwoDimensions
             () const noexcept;
             
             /**
@@ -324,7 +294,7 @@ namespace FluidEngine
              * @author Joshua Buchanan
              * @return VectorBase<Precision> 
              */
-            VectorBase<Precision> NormalizedForm() const noexcept;
+            VectorBase<VectorType> NormalizedForm() const noexcept;
             /**
              * @brief Normalizes this Vector (makes its magnitude 1 without 
              * changing its direction) with exact precision.
@@ -333,7 +303,7 @@ namespace FluidEngine
              * @author Joshua Buchanan
              * @return VectorBase<Precision> 
              */
-            VectorBase<Precision> NormalizedForm() noexcept;
+            VectorBase<VectorType> NormalizedForm() noexcept;
 
             /**
              * @brief Approximately normalizes this VectorBase using voodoo 
@@ -343,12 +313,7 @@ namespace FluidEngine
              * @author Joshua Buchanan
              * @return VectorBase<Precision> 
              */
-            template<bool std::enable_if<
-                std::is_same<
-                    VectorType, float
-                >, bool
-            > = true>
-            VectorBase<Precision> FastNormalize() const noexcept;
+            VectorBase<VectorType> FastNormalize() const noexcept;
             /**
              * @brief Approximately normalizes this VectorBase using voodoo 
              * math.
@@ -357,72 +322,7 @@ namespace FluidEngine
              * @author Joshua Buchanan
              * @return VectorBase<Precision> 
              */
-            template<bool std::enable_if<
-                std::is_same<
-                    VectorType, float
-                >, bool
-            > = true>
-            VectorBase<Precision> FastNormalize() noexcept;
-
-            /**
-             * @brief Approximately normalizes this VectorBase using voodoo 
-             * math.
-             * @note This algorithm is inspired by the fameous Q_fqrt
-             * algorithm
-             * @author Joshua Buchanan
-             * @return VectorBase<Precision> 
-             */
-            template<bool std::enable_if<
-                std::is_same<
-                    VectorType, double
-                >, bool
-            > = true>
-            VectorBase<Precision> FastNormalize() const noexcept;
-            /**
-             * @brief Approximately normalizes this VectorBase using voodoo 
-             * math.
-             * @note This algorithm is inspired by the fameous Q_fqrt
-             * algorithm
-             * @author Joshua Buchanan
-             * @return VectorBase<Precision> 
-             */
-            template<bool std::enable_if<
-                std::is_same<
-                    VectorType, double
-                >, bool
-            > = true>
-            VectorBase<Precision> FastNormalize() noexcept;
-
-            /**
-             * @brief Approximately normalizes this VectorBase using voodoo 
-             * math.
-             * @note This algorithm is inspired by the fameous Q_fqrt
-             * algorithm.
-             * @note Does not work as dramatically fast for long double.
-             * @author Joshua Buchanan
-             * @return VectorBase<Precision> 
-             */
-            template<bool std::enable_if<
-                std::is_same<
-                    VectorType, long double
-                >, bool
-            > = true>
-            VectorBase<Precision> FastNormalize() const noexcept;
-            /**
-             * @brief Approximately normalizes this VectorBase using voodoo 
-             * math.
-             * @note This algorithm is inspired by the fameous Q_fqrt
-             * algorithm
-             * @note does not work as dramatically fast for long double.
-             * @author Joshua Buchanan
-             * @return VectorBase<Precision> 
-             */
-            template<bool std::enable_if<
-                std::is_same<
-                    VectorType, long double
-                >, bool
-            > = true>
-            VectorBase<Precision> FastNormalize() noexcept;
+            VectorBase<VectorType> FastNormalize() noexcept;
 
             /**
              * @brief Calculates the magnitude of this VectorBase
