@@ -10,7 +10,9 @@
  */
 
 #include "../Source/Abstraction/FluidEngineMember.h++"
+#include "../Source/Mathematics/Tensor.h++"
 
+#include <cmath>
 #include <iostream>
 #include <fstream>
 
@@ -49,6 +51,27 @@ void TestFluidEngineShell()
 
 }
 
+void TestVectorCreation()
+{
+    using namespace FluidEngine::Mathematics;
+
+    VectorBase<double> oneoneone = 
+    VectorBase<double>::Generate3DRVectorWithName(L"<1,1,1>", 1.0, 1.0, 1.0);
+
+    VectorBase<double> polaroneoneone = 
+    VectorBase<double>::Generate3DPVectorWithName
+    (   
+        L"<sqrt(3),pi/4, pi/4>",
+        std::sqrt(3.0),
+        std::atan(1.0), // arctangent 1 = pi / 4
+        std::atan(1.0)
+    );
+
+    std::wcout << (oneoneone.GetCoordinates() 
+                == polaroneoneone.AsRectangular().GetCoordinates());
+    std::wcout << "\n";
+}
+
 
 int main()
 {
@@ -56,5 +79,5 @@ int main()
     std::wcout << "The above members have exited their scopes and are now deleted\n";
     TestFluidEngineShell();
     std::wcout << "The above members have exited their scopes and are now deleted\n";
-    
+    TestVectorCreation();
 }

@@ -782,7 +782,7 @@ const VectorBase<Precision> VectorBase<Precision>::Ensure3D() const noexcept
 {
     if(this->dimensions == VectorDimensions::D3)
     {
-        return (VectorBase<Precision)
+        return (VectorBase<Precision>)
         (Abstraction::FluidEngineMember::GetThisData(this));
     }
     else
@@ -803,7 +803,7 @@ const VectorBase<Precision> VectorBase<Precision>::Ensure3D() noexcept
 {
     if(this->dimensions == VectorDimensions::D3)
     {
-        return (VectorBase<Precision)
+        return (VectorBase<Precision>)
         (Abstraction::FluidEngineMember::GetThisData(this));
     }
     else
