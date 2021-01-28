@@ -13,6 +13,8 @@
 
 #include "../Abstraction/Unification.h++"
 
+#include "FastInverseSquareRoots.h++"
+
 using namespace FluidEngine::Mathematics;
 
 
@@ -301,7 +303,7 @@ VectorBase<Precision> VectorBase<Precision>::AsRectangular() noexcept
 template<FluidEngine::Concepts::UsableInVectorBase Precision>
 VectorBase<Precision> VectorBase<Precision>::AsPolar() const noexcept
 {
-    if (this->formatting == VectorFormatting::Plr)
+    if (this->formatting != VectorFormatting::Plr)
     {
         auto normalized = this->NormalizedForm();
 
@@ -352,12 +354,419 @@ VectorBase<Precision> VectorBase<Precision>::AsPolar() const noexcept
         }
         
     }
+    else
+    {
+        return (VectorBase<Precision>)
+        (Abstraction::FluidEngineMember::GetThisData(this));
+    }
+    
+}
+
+template<FluidEngine::Concepts::UsableInVectorBase Precision>
+VectorBase<Precision> VectorBase<Precision>::AsPolar() noexcept
+{
+    if (this->formatting != VectorFormatting::Plr)
+    {
+        auto normalized = this->NormalizedForm();
+
+        // because of a big-brain moment, we know that theta transforms into 
+        // arcsine ( sqrt ( z ^ 2 + x ^ 2)).
+        //
+        // this is because we need to eliminate the effect that phi has on our
+        // y value. So we use the good old Pythagorean Theorem.
+        // Phi is the arctangent of z / x
+        // 
+        // for 2D vectors, we can just use arcsine y directly.
+
+        if (std::isnan(this->coordinates[2]))
+        {
+            return VectorBase<Precision>
+            (
+                this->GetReferenceName(),
+                VectorDimensions::D2,
+                VectorFormatting::Plr,
+                this->Magnitude(),
+                std::asin(normalized.coordinates[1])
+            );
+        }
+        else
+        {
+            return VectorBase<Precision>
+            (
+                this->GetReferenceName(),
+                VectorDimensions::D3,
+                VectorFormatting::Plr,
+                this->Magnitude(),
+                std::asin
+                (
+                    std::sqrt
+                    (
+                        std::hypot
+                        (
+                            normalized.coordinates[0], 
+                            normalized.coordinates[1]
+                        )
+                    )
+                ),
+                std::atan
+                (
+                    normalized.coordinates[2] / normalized.coordinates[0]
+                )
+            );
+        }
+        
+    }
+    else
+    {
+        return (VectorBase<Precision>)
+        (Abstraction::FluidEngineMember::GetThisData(this));
+    }
+    
 }
 
 template<FluidEngine::Concepts::UsableInVectorBase Precision>
 VectorBase<Precision> VectorBase<Precision>::AsPolarFast() const noexcept
 {
-    // if we are a long double and on x86, this won't work (we have to switch to
-    // regular double)
+    // 
+    if (this->formatting == VectorFormatting::Plr)
+    {
+        return (VectorBase<Precision>)
+        (Abstraction::FluidEngineMember::GetThisData(this));
+    }
+    else
+    {
+        auto normalized = this->FastNormalize();
+
+        // because of a big-brain moment, we know that theta transforms into 
+        // arcsine ( sqrt ( z ^ 2 + x ^ 2)).
+        //
+        // this is because we need to eliminate the effect that phi has on our
+        // y value. So we use the good old Pythagorean Theorem.
+        // Phi is the arctangent of z / x
+        // 
+        // for 2D vectors, we can just use arcsine y directly.
+
+        if (std::isnan(this->coordinates[2]))
+        {
+            return VectorBase<Precision>
+            (
+                this->GetReferenceName(),
+                VectorDimensions::D2,
+                VectorFormatting::Plr,
+                this->Magnitude(),
+                std::asin(normalized.coordinates[1])
+            );
+        }
+        else
+        {
+            return VectorBase<Precision>
+            (
+                this->GetReferenceName(),
+                VectorDimensions::D3,
+                VectorFormatting::Plr,
+                this->Magnitude(),
+                std::asin
+                (
+                    FastInverseSquareRoot
+                    (
+                        std::hypot
+                        (
+                            normalized.coordinates[0], 
+                            normalized.coordinates[1]
+                        )
+                    )
+                ),
+                std::atan
+                (
+                    normalized.coordinates[2] / normalized.coordinates[0]
+                )
+            );
+        }
+    }
     
 }
+
+template<FluidEngine::Concepts::UsableInVectorBase Precision>
+VectorBase<Precision> VectorBase<Precision>::AsPolarFast() noexcept
+{
+    // 
+    if (this->formatting == VectorFormatting::Plr)
+    {
+        return (VectorBase<Precision>)
+        (Abstraction::FluidEngineMember::GetThisData(this));
+    }
+    else
+    {
+        auto normalized = this->FastNormalize();
+
+        // because of a big-brain moment, we know that theta transforms into 
+        // arcsine ( sqrt ( z ^ 2 + x ^ 2)).
+        //
+        // this is because we need to eliminate the effect that phi has on our
+        // y value. So we use the good old Pythagorean Theorem.
+        // Phi is the arctangent of z / x
+        // 
+        // for 2D vectors, we can just use arcsine y directly.
+
+        if (std::isnan(this->coordinates[2]))
+        {
+            return VectorBase<Precision>
+            (
+                this->GetReferenceName(),
+                VectorDimensions::D2,
+                VectorFormatting::Plr,
+                this->Magnitude(),
+                std::asin(normalized.coordinates[1])
+            );
+        }
+        else
+        {
+            return VectorBase<Precision>
+            (
+                this->GetReferenceName(),
+                VectorDimensions::D3,
+                VectorFormatting::Plr,
+                this->Magnitude(),
+                std::asin
+                (
+                    FastInverseSquareRoot
+                    (
+                        std::hypot
+                        (
+                            normalized.coordinates[0], 
+                            normalized.coordinates[1]
+                        )
+                    )
+                ),
+                std::atan
+                (
+                    normalized.coordinates[2] / normalized.coordinates[0]
+                )
+            );
+        }
+    }
+}
+
+template<FluidEngine::Concepts::UsableInVectorBase Precision>
+VectorBase<Precision> VectorBase<Precision>::ExpandToThreeDimensions
+(
+    const Precision& thirdCoordinate
+) const noexcept
+{
+    return VectorBase<Precision>
+    (
+        this->GetReferenceName(),
+        VectorDimensions::D3,
+        this->formatting,
+        this->coordinates[0],
+        this->coordinates[1],
+        thirdCoordinate
+    );
+}
+
+template<FluidEngine::Concepts::UsableInVectorBase Precision>
+VectorBase<Precision> VectorBase<Precision>::ExpandToThreeDimensions
+(
+    const Precision& thirdCoordinate
+) noexcept
+{
+    return VectorBase<Precision>
+    (
+        this->GetReferenceName(),
+        VectorDimensions::D3,
+        this->formatting,
+        this->coordinates[0],
+        this->coordinates[1],
+        thirdCoordinate
+    );
+}
+
+template<FluidEngine::Concepts::UsableInVectorBase Precision>
+VectorBase<Precision> VectorBase<Precision>::CompressToTwoDimensions()
+const noexcept
+{
+    return VectorBase<Precision>
+    (
+        this->name,
+        VectorDimensions::D2,
+        this->formatting,
+        this->coordinates[0],
+        this->coordinates[1]
+    );
+}
+
+template<FluidEngine::Concepts::UsableInVectorBase Precision>
+VectorBase<Precision> VectorBase<Precision>::CompressToTwoDimensions()
+noexcept
+{
+    return VectorBase<Precision>
+    (
+        this->name,
+        VectorDimensions::D2,
+        this->formatting,
+        this->coordinates[0],
+        this->coordinates[1]
+    );
+}
+
+template<FluidEngine::Concepts::UsableInVectorBase Precision>
+VectorBase<Precision> VectorBase<Precision>::NormalizedForm() const noexcept
+{
+    if (this->formatting == VectorFormatting::Plr)
+    {
+        return VectorBase<Precision>
+        (
+            this->GetReferenceName(),
+            this->dimensions,
+            this->formatting,
+            1,
+            this->coordinates[1],
+            this->coordinates[2]
+        );
+    }
+    else
+    {
+        const Precision magnitude = this->Magnitude();
+
+        return VectorBase<Precision>
+        (
+            this->GetReferenceName(),
+            this->dimensions,
+            this->formatting,
+            this->coordinates[0] / magnitude,
+            this->coordinates[1] / magnitude,
+            this->coordinates[2] / magnitude
+        );
+    }
+    
+}
+
+template<FluidEngine::Concepts::UsableInVectorBase Precision>
+VectorBase<Precision> VectorBase<Precision>::NormalizedForm() noexcept
+{
+    if (this->formatting == VectorFormatting::Plr)
+    {
+        return VectorBase<Precision>
+        (
+            this->GetReferenceName(),
+            this->dimensions,
+            this->formatting,
+            1,
+            this->coordinates[1],
+            this->coordinates[2]
+        );
+    }
+    else
+    {
+        const Precision magnitude = this->Magnitude();
+
+        return VectorBase<Precision>
+        (
+            this->GetReferenceName(),
+            this->dimensions,
+            this->formatting,
+            this->coordinates[0] / std::sqrt(magnitude),
+            this->coordinates[1] / std::sqrt(magnitude),
+            this->coordinates[2] / std::sqrt(magnitude)
+        );
+    }
+    
+}
+
+template<FluidEngine::Concepts::UsableInVectorBase Precision>
+VectorBase<Precision> VectorBase<Precision>::FastNormalize() const noexcept
+{
+    if (this->formatting == VectorFormatting::Plr)
+    {
+        return VectorBase<Precision>
+        (
+            this->GetReferenceName(),
+            this->dimensions,
+            this->formatting,
+            1,
+            this->coordinates[1],
+            this->coordinates[2]
+        );
+    }
+    else
+    {
+        const Precision magnitude = this->Magnitude();
+        const Precision multiplicationFactor = FastInverseSquareRoot(magnitude);
+
+        return VectorBase<Precision>(
+            this->GetReferenceName(),
+            this->dimensions,
+            this->formatting,
+            this->coordinates[0] * multiplicationFactor,
+            this->coordinates[1] * multiplicationFactor,
+            this->coordinates[2] * multiplicationFactor);
+    }
+    
+}
+
+template<FluidEngine::Concepts::UsableInVectorBase Precision>
+VectorBase<Precision> VectorBase<Precision>::FastNormalize() noexcept
+{
+    if (this->formatting == VectorFormatting::Plr)
+    {
+        return VectorBase<Precision>
+        (
+            this->GetReferenceName(),
+            this->dimensions,
+            this->formatting,
+            1,
+            this->coordinates[1],
+            this->coordinates[2]
+        );
+    }
+    else
+    {
+        const Precision magnitude = this->Magnitude();
+        const Precision multiplicationFactor = FastInverseSquareRoot(magnitude);
+
+        return VectorBase<Precision>(
+            this->GetReferenceName(),
+            this->dimensions,
+            this->formatting,
+            this->coordinates[0] * multiplicationFactor,
+            this->coordinates[1] * multiplicationFactor,
+            this->coordinates[2] * multiplicationFactor);
+    }
+}
+
+template<FluidEngine::Concepts::UsableInVectorBase Precision>
+const Precision VectorBase<Precision>::Magnitude() const noexcept
+{
+    if (this->formatting == VectorFormatting::Plr)
+    {
+        return this->coordinates[0];
+    }
+    else
+    {
+        const Precision used = this->dimensions == VectorDimensions::D3 ?
+                               this->coordinates[2] : 0;
+        return this->coordinates[0] * this->coordinates[0] + 
+               this->coordinates[1] * this->coordinates[1] +
+               used * used;
+    }
+    
+}
+
+template<FluidEngine::Concepts::UsableInVectorBase Precision>
+const Precision VectorBase<Precision>::Magnitude() noexcept
+{
+    if (this->formatting == VectorFormatting::Plr)
+    {
+        return this->coordinates[0];
+    }
+    else
+    {
+        const Precision used = this->dimensions == VectorDimensions::D3 ?
+                               this->coordinates[2] : 0;
+        return this->coordinates[0] * this->coordinates[0] + 
+               this->coordinates[1] * this->coordinates[1] +
+               used * used;
+    }
+    
+}
+
