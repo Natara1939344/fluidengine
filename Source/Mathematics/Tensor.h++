@@ -337,6 +337,9 @@ namespace FluidEngine
              */
             const VectorType Magnitude() noexcept;
 
+            const VectorBase<VectorType> Ensure3D() const noexcept;
+            const VectorBase<VectorType> Ensure3D() noexcept;
+
             const VectorBase<VectorType>& operator+
             (
                 const VectorBase<VectorType>&
@@ -382,7 +385,7 @@ namespace FluidEngine
                 const VectorBase<VectorType>&
             ) noexcept;
 
-            
+
             //-----------------------------------------------------------------
             // Outlining is your friend :) Stick to 80 columns
             //-----------------------------------------------------------------

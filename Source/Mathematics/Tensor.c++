@@ -770,3 +770,46 @@ const Precision VectorBase<Precision>::Magnitude() noexcept
     
 }
 
+/**
+ * @brief Ensures that this is in three dimensions to avoid propagating a quiet
+ * NaN
+ * 
+ * @tparam Precision 
+ * @return const VectorBase<Precision> 
+ */
+template<FluidEngine::Concepts::UsableInVectorBase Precision>
+const VectorBase<Precision> VectorBase<Precision>::Ensure3D() const noexcept
+{
+    if(this->dimensions == VectorDimensions::D3)
+    {
+        return (VectorBase<Precision)
+        (Abstraction::FluidEngineMember::GetThisData(this));
+    }
+    else
+    {
+        return this->ExpandToThreeDimensions();
+    }
+}
+
+/**
+ * @brief Ensures that this is in three dimensions to avoid proagating a quiet
+ * NaN
+ * 
+ * @tparam Precision 
+ * @return const VectorBase<Precision> 
+ */
+template<FluidEngine::Concepts::UsableInVectorBase Precision>
+const VectorBase<Precision> VectorBase<Precision>::Ensure3D() noexcept
+{
+    if(this->dimensions == VectorDimensions::D3)
+    {
+        return (VectorBase<Precision)
+        (Abstraction::FluidEngineMember::GetThisData(this));
+    }
+    else
+    {
+        return this->ExpandToThreeDimensions();
+    }
+}
+
+
