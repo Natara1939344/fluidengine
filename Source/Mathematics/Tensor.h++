@@ -105,7 +105,7 @@ namespace FluidEngine
                 const VectorType& = std::numeric_limits<
                     VectorType
                 >::quiet_nan()
-            );
+            ) noexcept;
 
             /**
              * @brief Get the quantity of dimensions
@@ -284,7 +284,7 @@ namespace FluidEngine
              * @return VectorBase<Precision> 
              */
             VectorBase<VectorType> CompressToTwoDimensions
-            () const noexcept;
+            () noexcept;
             
             /**
              * @brief Normalizes this Vector (makes its magnitude 1 without 
@@ -337,40 +337,40 @@ namespace FluidEngine
              */
             const VectorType Magnitude() noexcept;
 
-            const VectorBase<Precision>& operator+
+            const VectorBase<VectorType>& operator+
             (
-                const VectorBase<Precision>&
+                const VectorBase<VectorType>&
             ) const noexcept;
-            const VectorBase<Precision>& operator+
+            const VectorBase<VectorType>& operator+
             (
-                const VectorBase<Precision>&
+                const VectorBase<VectorType>&
             ) noexcept;
 
-            const VectorBase<Precision>& operator-
+            const VectorBase<VectorType>& operator-
             (
-                const VectorBase<Precision>&
+                const VectorBase<VectorType>&
             ) const noexcept;
-            const VectorBase<Precision>& operator-
+            const VectorBase<VectorType>& operator-
             (
-                const VectorBase<Precision>&
+                const VectorBase<VectorType>&
             ) noexcept;
 
-            const VectorBase<Precision>& operator*
+            const VectorBase<VectorType>& operator*
             (
-                const VectorBase<Precision>&
+                const VectorBase<VectorType>&
             ) const noexcept;
-            const VectorBase<Precision>& operator*
+            const VectorBase<VectorType>& operator*
             (
-                const VectorBase<Precision>&
-            ) const noexcept;
+                const VectorBase<VectorType>&
+            ) noexcept;
 
-            const VectorBase<Precision>& operator/
+            const VectorBase<VectorType>& operator/
             (
-                const VectorBase<Precision>&
+                const VectorBase<VectorType>&
             ) const noexcept;
-            const VectorBase<Precision>& operator/
+            const VectorBase<VectorType>& operator/
             (
-                const VectorBase<Precision>&
+                const VectorBase<VectorType>&
             ) noexcept;
 
 
@@ -387,7 +387,7 @@ namespace FluidEngine
              * @param y y coordinate
              * @return VectorBase<Precision> 
              */
-            static __always_inline VectorBase<Precision> 
+            static __always_inline VectorBase<VectorType> 
             Generate2DRVectorWithName
             (
                 const std::wstring& name,
@@ -395,7 +395,7 @@ namespace FluidEngine
                 const VectorType& y
             ) noexcept
             {
-                return VectorBase<Precision>
+                return VectorBase<VectorType>
                 (
                     name, 
                     VectorDimensions::D2, 
@@ -412,14 +412,14 @@ namespace FluidEngine
              * @param y y coordinate
              * @return VectorBase<Precision> 
              */
-            static __always_inline VectorBase<Precision>
+            static __always_inline VectorBase<VectorType>
             Generate2DRVectorWithOutName
             (
                 const VectorType& x, 
                 const VectorType& y
             ) noexcept
             {
-                return VectorBase<Precision>
+                return VectorBase<VectorType>
                 (
                     VectorDimensions::D2, 
                     VectorFormatting::Rct, 
@@ -437,7 +437,7 @@ namespace FluidEngine
              * @param z z coordinate
              * @return VectorBase<Precision> 
              */
-            static __always_inline VectorBase<Precision> 
+            static __always_inline VectorBase<VectorType> 
             Generate3DRVectorWithName
             (
                 const std::wstring& name, 
@@ -446,7 +446,7 @@ namespace FluidEngine
                 const VectorType& z
             ) noexcept
             {
-                return VectorBase<Precision>
+                return VectorBase<VectorType>
                 (
                     name, 
                     VectorDimensions::D3, 
@@ -465,7 +465,7 @@ namespace FluidEngine
              * @param z z coordinate
              * @return VectorBase<Precision> 
              */
-            static __always_inline VectorBase<Precision> 
+            static __always_inline VectorBase<VectorType> 
             Generate3DRVectorWithOutName
             (
                 const VectorType& x, 
@@ -473,7 +473,7 @@ namespace FluidEngine
                 const VectorType& z
             ) noexcept
             {
-                return VectorBase<Precision>
+                return VectorBase<VectorType>
                 (
                     VectorDimensions::D3, 
                     VectorFormatting::Rct, 
@@ -492,7 +492,7 @@ namespace FluidEngine
              * 
              * @return VectorBase<Precision>
              */
-            static __always_inline VectorBase<Precision> 
+            static __always_inline VectorBase<VectorType> 
             Generate2DPVectorWithName
             (
                 const std::wstring& name, 
@@ -500,7 +500,7 @@ namespace FluidEngine
                 const VectorType& Θ
             ) noexcept
             {
-                return VectorBase<Precision>
+                return VectorBase<VectorType>
                 (
                     name, 
                     VectorDimensions::D2, 
@@ -516,14 +516,14 @@ namespace FluidEngine
              * 
              * @return VectorBase<Precision>
              */
-            static __always_inline VectorBase<Precision> 
+            static __always_inline VectorBase<VectorType> 
             Generate2DPVectorWithOutName
             (
                 const VectorType& r, 
                 const VectorType& Θ
             ) noexcept
             {
-                return VectorBase<Precision>
+                return VectorBase<VectorType>
                 (
                     VectorDimensions::D2, 
                     VectorFormatting::Plr,
@@ -542,7 +542,7 @@ namespace FluidEngine
              * 
              * @return VectorBase<Precision>
              */
-            static __always_inline VectorBase<Precision> 
+            static __always_inline VectorBase<VectorType> 
             Generate3DPVectorWithName
             (
                 const std::wstring& name, 
@@ -551,7 +551,7 @@ namespace FluidEngine
                 const VectorType& ϕ
             ) noexcept
             {
-                return VectorBase<Precision>
+                return VectorBase<VectorType>
                 (
                     name, 
                     VectorDimensions::D3, 
@@ -571,7 +571,7 @@ namespace FluidEngine
              * 
              * @return VectorBase<Precision>
              */
-            static __always_inline VectorBase<Precision>
+            static __always_inline VectorBase<VectorType>
             Generate3DPVectorWithOutName
             (
                 const VectorType& r, 
@@ -579,7 +579,7 @@ namespace FluidEngine
                 const VectorType& ϕ
             ) noexcept
             {
-                return VectorBase<Precision>
+                return VectorBase<VectorType>
                 (
                     VectorDimensions::D3, 
                     VectorFormatting::Plr, 

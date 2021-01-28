@@ -37,8 +37,7 @@ VectorBase<Precision>::VectorBase
     const VectorFormatting& formatting,
     const VectorType& xOrR,
     const VectorType& yOrΘ,
-    const VectorType& zOrϕ =
-        std::numeric_limits<VectorType>::quiet_nan()
+    const VectorType& zOrϕ
 ) noexcept : Abstraction::FluidEngineMember(vectorName)
 {
     this->dimensions = dimensions;
@@ -67,8 +66,7 @@ VectorBase<Precision>::VectorBase
     const VectorFormatting& formatting,
     const VectorType& xOrR,
     const VectorType& yOrΘ,
-    const VectorType& zOrϕ = 
-        std::numeric_limits<VectorType>::quiet_nan()
+    const VectorType& zOrϕ
 ) noexcept 
 : VectorBase
 (
@@ -210,7 +208,7 @@ VectorBase<Precision> VectorBase<Precision>::AsRectangular() const noexcept
     if(this->formatting == VectorFormatting::Rct)
     {
         return (VectorBase<Precision>)
-        (Abstraction::FluidEngineMember::GetThisData(this))
+        (Abstraction::FluidEngineMember::GetThisData(this));
     }
     else
     {
@@ -222,17 +220,17 @@ VectorBase<Precision> VectorBase<Precision>::AsRectangular() const noexcept
         // y = r * sin(theta) * cos(phi)
         // z = r * sin(theta) * sin(phi)
 
-        Precision x = this->coordinates[0] * Cosine(this->coordinates[1]);
-        Precision y = this->coordinates[0] * Sine(this->coordinates[1]);
-        Precision z = this->coordinates[0] * Sine(this->coordinates[1]);
+        Precision x = this->coordinates[0] * std::cos(this->coordinates[1]);
+        Precision y = this->coordinates[0] * std::sin(this->coordinates[1]);
+        Precision z = this->coordinates[0] * std::sin(this->coordinates[1]);
 
         if (!std::isnan(this->coordinates[2]))
         {
-            Precision phiFactor = Cosine(this->coordinates[2]);
+            Precision phiFactor = std::cos(this->coordinates[2]);
 
             x *= phiFactor;
             y *= phiFactor;
-            z *= Sine(this->coordinates[2]);
+            z *= std::sin(this->coordinates[2]);
         }
         else
         {
@@ -258,7 +256,7 @@ VectorBase<Precision> VectorBase<Precision>::AsRectangular() noexcept
     if(this->formatting == VectorFormatting::Rct)
     {
         return (VectorBase<Precision>)
-        (Abstraction::FluidEngineMember::GetThisData(this))
+        (Abstraction::FluidEngineMember::GetThisData(this));
     }
     else
     {
@@ -270,17 +268,17 @@ VectorBase<Precision> VectorBase<Precision>::AsRectangular() noexcept
         // y = r * sin(theta) * cos(phi)
         // z = r * sin(theta) * sin(phi)
 
-        Precision x = this->coordinates[0] * Cosine(this->coordinates[1]);
-        Precision y = this->coordinates[0] * Sine(this->coordinates[1]);
-        Precision z = this->coordinates[0] * Sine(this->coordinates[1]);
+        Precision x = this->coordinates[0] * std::cos(this->coordinates[1]);
+        Precision y = this->coordinates[0] * std::sin(this->coordinates[1]);
+        Precision z = this->coordinates[0] * std::sin(this->coordinates[1]);
 
         if (!std::isnan(this->coordinates[2]))
         {
-            Precision phiFactor = Cosine(this->coordinates[2]);
+            Precision phiFactor = std::cos(this->coordinates[2]);
 
             x *= phiFactor;
             y *= phiFactor;
-            z *= Sine(this->coordinates[2]);
+            z *= std::sin(this->coordinates[2]);
         }
         else
         {
@@ -324,7 +322,7 @@ VectorBase<Precision> VectorBase<Precision>::AsPolar() const noexcept
                 VectorDimensions::D2,
                 VectorFormatting::Plr,
                 this->Magnitude(),
-                Arcsine(normalized.coordinates[1])
+                std::asin(normalized.coordinates[1])
             );
         }
         else
@@ -332,21 +330,21 @@ VectorBase<Precision> VectorBase<Precision>::AsPolar() const noexcept
             return VectorBase<Precision>
             (
                 this->GetReferenceName(),
-                VectorDimensions::D3
+                VectorDimensions::D3,
                 VectorFormatting::Plr,
                 this->Magnitude(),
-                Arcsine
+                std::asin
                 (
-                    SquareRoot
+                    std::sqrt
                     (
-                        PythagoreanTheorem
+                        std::hypot
                         (
                             normalized.coordinates[0], 
                             normalized.coordinates[1]
                         )
                     )
                 ),
-                Arctangent
+                std::atan
                 (
                     normalized.coordinates[2] / normalized.coordinates[0]
                 )
